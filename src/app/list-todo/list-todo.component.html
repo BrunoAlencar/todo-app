@@ -1,0 +1,86 @@
+<div *ngIf="editSuccess" class="alert alert-success mt-2 text-center" role="alert">
+    <b> {{ msg }}</b>
+</div>
+<div *ngIf="deleteSuccess" class="alert alert-danger mt-2 text-center" role="alert">
+    <b> Excluido com sucesso!</b>
+</div>
+
+<h2 *ngIf="todos" class="text-center mt-2">Tarefas</h2>
+<div *ngFor="let item of todos" class="mt-2">
+    <div *ngIf="item?.state">
+        <button class="btn btn-block btn-default  waves-light" type="button" (click)="basicModal.show();todo = item;" mdbRippleRadius>
+             {{item.title}}  
+        </button>
+    </div>
+</div>
+<h2 *ngIf="todos" class="text-center mt-2">Concluídos</h2>
+<div *ngFor="let item of todos" class="mt-2">
+    <div *ngIf="!item?.state">
+        <button class="btn btn-block btn-elegant  waves-light" type="button" (click)="basicModal.show();todo = item;" mdbRippleRadius>
+             {{item.title}}  
+        </button>
+    </div>
+</div>
+
+
+<div mdbModal #basicModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myBasicModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: true}">
+    <div class="modal-dialog  modal-lg " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="basicModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="myModalLabel">{{todo?.title}}</h4>
+            </div>
+            <div class="modal-body">
+                {{todo?.description}}
+            </div>
+            <div class="modal-footer justify-content-center">
+                <div *ngIf="todo?.state">
+                    <button type="button" class="btn btn-success waves-light" (click)="finalizeItem();basicModal.hide()" mdbRippleRadius>Feito!</button>
+                    <button type="button" class="btn btn-primary waves-light" (click)="basicModal.hide();editModal.show();startEdit();" mdbRippleRadius>Editar</button>
+                </div>
+                <button type="button" class="btn btn-danger waves-light" (click)="basicModal.hide();delete();" mdbRippleRadius>Excluir</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div mdbModal #editModal="mdb-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true" [config]="{backdrop: true, ignoreBackdropClick: true}">
+    <div class="modal-dialog  modal-lg " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close pull-right" aria-label="Close" (click)="editModal.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+                <h4 class="modal-title w-100" id="editModalLabel">Editar</h4>
+            </div>
+            <div *ngIf="editBoolean" class="modal-body">
+
+                <form [formGroup]="editItemFormGroup" (ngSubmit)="edit(); $event.preventDefault();editModal.hide();">
+
+                    <div class="modal-body mb-0">
+                        <div class="md-form form-sm">
+                            <i class="fa fa-tag prefix"></i>
+                            <input type="text" formControlName="title" id="title" class="form-control" mdbActive>
+                            <label for="title">Título</label>
+                        </div>
+
+                        <div class="md-form form-sm">
+                            <i class="fa fa-pencil prefix"></i>
+                            <textarea mdbActive type="text" id="description" formControlName="description" class="md-textarea mb-0"></textarea>
+                            <label for="description">Descreva o item</label>
+                        </div>
+
+                        <div class="text-center mt-1-half">
+                            <button class="btn btn-info mb-2 waves-light" type="submit" [disabled]="editItemFormGroup.invalid" mdbRippleRadius>Editar <i class="fa fa-pencil ml-1"></i></button>
+                        </div>
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

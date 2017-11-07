@@ -1,0 +1,47 @@
+<button type="button" class="btn btn-block btn-indigo  waves-light" (click)="form.show()" mdbRippleRadius>
+    Adicionar tarefa
+    <i class="fa fa-plus  ml-1"></i>
+</button>
+<div *ngIf="addSuccess" class="alert alert-success mt-2 text-center" role="alert">
+    <b> Cadastrado com sucesso!</b>
+</div>
+<!--Modal: Contact form-->
+<div mdbModal #form="mdb-modal" class="modal fade" id="modalContactForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-blue darken-3 white-text">
+                <h4 class="title"><i class="fa fa-list-ul"></i> Adicionar Tarefa</h4>
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" (click)="form.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!--Body-->
+            <form [formGroup]="addItemFormGroup" (ngSubmit)="add(); $event.preventDefault();form.hide();">
+
+                <div class="modal-body mb-0">
+                    <div class="md-form form-sm">
+                        <i class="fa fa-tag prefix"></i>
+                        <input type="text" formControlName="title" id="title" class="form-control" mdbActive>
+                        <label for="title">Título</label>
+                    </div>
+
+                    <div class="md-form form-sm">
+                        <i class="fa fa-pencil prefix"></i>
+                        <textarea mdbActive type="text" id="description" formControlName="description" class="md-textarea mb-0"></textarea>
+                        <label for="description">Descreva o item</label>
+                    </div>
+
+                    <div class="text-center mt-1-half">
+                        <button class="btn btn-info mb-2 waves-light" type="submit" [disabled]="addItemFormGroup.invalid" mdbRippleRadius>Adicionar <i class="fa fa-plus ml-1"></i></button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: Contact form-->
